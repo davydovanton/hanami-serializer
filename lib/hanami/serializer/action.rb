@@ -1,6 +1,6 @@
 module Hanami
   module Serializer
-    module Json
+    module Action
       def send_json(response, status: 200)
         self.status = status
         self.body = JSON.generate(response)
