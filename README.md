@@ -42,9 +42,57 @@ load_paths << %w[
 ```
 
 ## Usage
-
 ### Action helpers
+* `#send_json` - casts object as json and sets it to action `body`
+* `#serializator` - returns serializator class for current action
+
+#### Example
+```ruby
+# api/controllers/controller/index.rb
+
+module Api::Controllers::Controller
+  class Show
+    include Api::Action
+    include Hanami::Serializer::Action
+
+    def call(params)
+      object = repo.find(params[:id])
+      serializator # => Api::Serializators::Controller::Show
+
+      serializator.new(object)
+      send_json(object)
+    end
+  end
+end
+```
+
 ### Serializators
+Create simple serializator for each action:
+
+```ruby
+# api/serializators/controller/index.rb
+
+module Api::Serializators
+  module Controller
+    class Show < Hanami::Serializer::Base
+      # put here attributes needful for action
+      attribute :id,   Types::Id
+      attribute :name, Types::UserName
+    end
+  end
+end
+```
+
+And after that you can use it like a usual ruby object:
+```ruby
+user = User.new(id: 1, name: 'anton', login: 'davydovanton')
+
+serializator = Api::Serializators::Contributors::Index.new(user)
+
+serializator.to_json        # => '{ "id":1, "name": "anton" }'
+serializator.call           # => '{ "id":1, "name": "anton" }'
+JSON.generate(serializator) # => '{ "id":1, "name": "anton" }'
+```
 
 ## TODO
 * tests for all helpers
