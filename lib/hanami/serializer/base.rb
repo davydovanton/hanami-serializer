@@ -1,3 +1,5 @@
+require 'json'
+
 module Hanami
   module Serializer
     class Base < Dry::Struct

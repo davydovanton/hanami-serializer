@@ -1,11 +1,23 @@
 require 'test_helper'
 
-class Hanami::SerializerTest < Minitest::Test
-  def test_that_it_has_a_version_number
-    refute_nil ::Hanami::Serializer::VERSION
-  end
+describe Hanami::Serializer do
+  let(:serializer) { UserSerializer.new(object) }
 
-  def test_it_does_something_useful
-    assert false
+  describe '#to_json' do
+    describe 'works with hash' do
+      let(:object) { { id: 1, name: 'Anton' } }
+
+      it { serializer.to_json.must_equal '{"name":"Anton"}' }
+      it { serializer.call.must_equal '{"name":"Anton"}' }
+      it { JSON.generate(serializer).must_equal '{"name":"Anton"}' }
+    end
+
+    describe 'works with hanami-entity' do
+      let(:object) { User.new(id: 1, name: 'Anton', email: 'test@site.com', created_at: Time.now) }
+
+      it { serializer.to_json.must_equal '{"name":"Anton"}' }
+      it { serializer.call.must_equal '{"name":"Anton"}' }
+      it { JSON.generate(serializer).must_equal '{"name":"Anton"}' }
+    end
   end
 end
