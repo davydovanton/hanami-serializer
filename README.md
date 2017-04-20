@@ -57,10 +57,16 @@ module Api::Controllers::Controller
 
     def call(params)
       object = repo.find(params[:id])
+
       serializator # => Api::Serializators::Controller::Show
 
-      serializator.new(object)
+      object = serializator.new(object)
       send_json(object)
+
+      # simular to
+      #
+      #   self.status = 200
+      #   self.body = JSON.generate(object)
     end
   end
 end
