@@ -72,6 +72,30 @@ module Api::Controllers::Controller
 end
 ```
 
+#### Custom serializator class
+If you want to use custom serializator class you can override `#serializator` method like this:
+
+```ruby
+# api/controllers/controller/index.rb
+
+module Api::Controllers::Controller
+  class Update
+    include Api::Action
+    include Hanami::Serializer::Action
+
+    def call(params)
+      serializator # => Api::Serializators::Controller::Create
+
+      # code
+    end
+
+    def serializator
+      @serializator ||= Api::Serializators::Controller::Create
+    end
+  end
+end
+```
+
 ### Serializators
 Create simple serializator for each action:
 
