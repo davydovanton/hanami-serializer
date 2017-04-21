@@ -126,6 +126,8 @@ JSON.generate(serializator) # => '{ "id":1, "name": "anton" }'
 
 ## TODO
 * tests for all helpers
+* shared attributes
+* nested attrubutes
 
 ## Contributing
 
