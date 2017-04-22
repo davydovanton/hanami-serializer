@@ -124,6 +124,38 @@ serializator.call           # => '{ "id":1, "name": "anton" }'
 JSON.generate(serializator) # => '{ "id":1, "name": "anton" }'
 ```
 
+### Nested
+You can use nested data structures. You have 2 ways how to use it
+
+#### Type
+We can create new [hash type](http://dry-rb.org/gems/dry-types/hash-schemas/) of attribute:
+
+```ruby
+class UserWithAvatarSerializer < Hanami::Serializer::Base
+  attribute :name, Types::String
+
+  attribute :avatar, Types::Hash.schema(
+    upload_file_name: Types::String,
+    upload_file_size: Types::Coercible::Int
+  )
+end
+```
+
+#### Serializator
+We can user other serializator as a type for attribute:
+
+```ruby
+class AvatarSerializer < Hanami::Serializer::Base
+  attribute :upload_file_name, Types::String
+  attribute :upload_file_size, Types::Coercible::Int
+end
+
+class NestedUserSerializer < Hanami::Serializer::Base
+  attribute :name, Types::String
+  attribute :avatar, AvatarSerializer
+end
+```
+
 ## TODO
 * tests for all helpers
 * shared attributes
