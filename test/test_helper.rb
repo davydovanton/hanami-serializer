@@ -33,3 +33,13 @@ class UserWithAvatarSerializer < Hanami::Serializer::Base
     upload_file_size: Types::Coercible::Int
   ).default({})
 end
+
+class AvatarSerializer < Hanami::Serializer::Base
+  attribute :upload_file_name, Types::String
+  attribute :upload_file_size, Types::Coercible::Int
+end
+
+class NestedUserSerializer < Hanami::Serializer::Base
+  attribute :name, Types::String
+  attribute :avatar, AvatarSerializer
+end
