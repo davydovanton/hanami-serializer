@@ -24,3 +24,12 @@ end
 class UserSerializer < Hanami::Serializer::Base
   attribute :name, Types::String
 end
+
+class UserWithAvatarSerializer < Hanami::Serializer::Base
+  attribute :name, Types::String
+
+  attribute :avatar, Types::Hash.schema(
+    upload_file_name: Types::String,
+    upload_file_size: Types::Coercible::Int
+  ).default({})
+end
