@@ -156,6 +156,44 @@ class NestedUserSerializer < Hanami::Serializer::Base
 end
 ```
 
+### Shared
+You can share your serializator code using general classes. For this you need:
+
+1. Create model-specific serializator
+2. Use oop inheritance for sharing model-specific attributes
+
+```ruby
+# api/serializators/user.rb
+
+module Api::Serializators
+  class User < Hanami::Serializer::Base
+    attribute :name, Types::UserName
+  end
+end
+```
+
+```ruby
+# api/serializators/users/index.rb
+module Api::Serializators
+  module Users
+    class Index < User
+      # put here other attributes needful for action
+      attribute :id, Types::Id
+    end
+  end
+end
+
+# api/serializators/users/show.rb
+module Api::Serializators
+  module Users
+    class Show < User
+      # put here other attributes needful for action
+      attribute :posts, Types::Posts
+    end
+  end
+end
+```
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/hanami-serializer. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
