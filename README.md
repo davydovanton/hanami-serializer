@@ -2,7 +2,18 @@
 
 Simple solution for serializing you data in hanami apps.
 
-## Why?
+* [Installation](#installation)
+* [Usage](#usage)
+  * [Action helpers](#action-helpers)
+    * [Example](#example)
+    * [Custom serializator class](#custom-serializator-class)
+  * [Serializators](#serializators)
+    * [Nested](#nested)
+      * [Type](#type)
+      * [Serializator](#serializator)
+    * [Shared](#shared)
+* [Contributing](#contributing)
+* [License](#license)
 
 ## Installation
 
