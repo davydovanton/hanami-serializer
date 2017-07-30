@@ -6,14 +6,16 @@ module Hanami
         self.body = JSON.generate(response)
       end
 
-      def serializator
-        @serializator ||=
+      def serializer
+        @serializer ||=
           begin
             namespases = self.class.name.split('::')
-            namespases[1] = 'Serializators'
+            namespases[1] = 'serializers'
             Hanami::Utils::Class.load(namespases.join('::'))
           end
       end
+
+      alias :serializator :serializer
     end
   end
 end

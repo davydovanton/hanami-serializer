@@ -6,11 +6,11 @@ Simple solution for serializing you data in hanami apps.
 * [Usage](#usage)
   * [Action helpers](#action-helpers)
     * [Example](#example)
-    * [Custom serializator class](#custom-serializator-class)
-  * [Serializators](#serializators)
+    * [Custom serializer class](#custom-serializer-class)
+  * [Serializers](#serializers)
     * [Nested](#nested)
       * [Type](#type)
-      * [Serializator](#serializator)
+      * [Serializer](#serializer)
     * [Shared](#shared)
 * [Contributing](#contributing)
 * [License](#license)
@@ -41,21 +41,21 @@ module Types
 end
 ```
 
-Create and add `serializators` folder to application:
+Create and add `serializers` folder to application:
 
 ```ruby
 # apps/api/application.rb
 
 load_paths << %w[
   controllers
-  serializators
+  serializers
 ]
 ```
 
 ## Usage
 ### Action helpers
 * `#send_json` - casts object as json and sets it to action `body`
-* `#serializator` - returns serializator class for current action
+* `#serializer` - returns serializer class for current action
 
 #### Example
 ```ruby
@@ -69,9 +69,9 @@ module Api::Controllers::Controller
     def call(params)
       object = repo.find(params[:id])
 
-      serializator # => Api::Serializators::Controller::Show
+      serializer # => Api::Serializers::Controller::Show
 
-      object = serializator.new(object)
+      object = serializer.new(object)
       send_json(object)
 
       # simular to
@@ -83,8 +83,8 @@ module Api::Controllers::Controller
 end
 ```
 
-#### Custom serializator class
-If you want to use custom serializator class you can override `#serializator` method like this:
+#### Custom serializer class
+If you want to use custom serializer class you can override `#serializer` method like this:
 
 ```ruby
 # api/controllers/controller/index.rb
@@ -95,25 +95,25 @@ module Api::Controllers::Controller
     include Hanami::Serializer::Action
 
     def call(params)
-      serializator # => Api::Serializators::Controller::Create
+      serializer # => Api::Serializers::Controller::Create
 
       # code
     end
 
-    def serializator
-      @serializator ||= Api::Serializators::Controller::Create
+    def serializer
+      @serializer ||= Api::Serializers::Controller::Create
     end
   end
 end
 ```
 
-### Serializators
-Create simple serializator for each action:
+### Serializers
+Create simple serializer for each action:
 
 ```ruby
-# api/serializators/controller/index.rb
+# api/serializers/controller/index.rb
 
-module Api::Serializators
+module Api::Serializers
   module Controller
     class Show < Hanami::Serializer::Base
       # put here attributes needful for action
@@ -128,11 +128,11 @@ And after that you can use it like a usual ruby object:
 ```ruby
 user = User.new(id: 1, name: 'anton', login: 'davydovanton')
 
-serializator = Api::Serializators::Contributors::Index.new(user)
+serializer = Api::Serializers::Contributors::Index.new(user)
 
-serializator.to_json        # => '{ "id":1, "name": "anton" }'
-serializator.call           # => '{ "id":1, "name": "anton" }'
-JSON.generate(serializator) # => '{ "id":1, "name": "anton" }'
+serializer.to_json        # => '{ "id":1, "name": "anton" }'
+serializer.call           # => '{ "id":1, "name": "anton" }'
+JSON.generate(serializer) # => '{ "id":1, "name": "anton" }'
 ```
 
 ### Nested
@@ -152,8 +152,8 @@ class UserWithAvatarSerializer < Hanami::Serializer::Base
 end
 ```
 
-#### Serializator
-We can user other serializator as a type for attribute:
+#### Serializer
+We can user other serializer as a type for attribute:
 
 ```ruby
 class AvatarSerializer < Hanami::Serializer::Base
@@ -168,15 +168,15 @@ end
 ```
 
 ### Shared
-You can share your serializator code using general classes. For this you need:
+You can share your serializer code using general classes. For this you need:
 
-1. Create model-specific serializator
+1. Create model-specific serializer
 2. Use oop inheritance for sharing model-specific attributes
 
 ```ruby
-# api/serializators/user.rb
+# api/serializers/user.rb
 
-module Api::Serializators
+module Api::Serializers
   class User < Hanami::Serializer::Base
     attribute :name, Types::UserName
   end
@@ -184,8 +184,8 @@ end
 ```
 
 ```ruby
-# api/serializators/users/index.rb
-module Api::Serializators
+# api/serializers/users/index.rb
+module Api::Serializers
   module Users
     class Index < User
       # put here other attributes needful for action
@@ -194,8 +194,8 @@ module Api::Serializators
   end
 end
 
-# api/serializators/users/show.rb
-module Api::Serializators
+# api/serializers/users/show.rb
+module Api::Serializers
   module Users
     class Show < User
       # put here other attributes needful for action
