@@ -10,7 +10,7 @@ module Hanami
         @serializer ||=
           begin
             namespases = self.class.name.split('::')
-            namespases[1] = 'serializers'
+            namespases[1] = 'Serializers'
             Hanami::Utils::Class.load(namespases.join('::'))
           end
       end
