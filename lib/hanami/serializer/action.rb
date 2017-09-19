@@ -9,9 +9,9 @@ module Hanami
       def serializer
         @serializer ||=
           begin
-            namespases = self.class.name.split('::')
-            namespases[1] = 'serializers'
-            Hanami::Utils::Class.load(namespases.join('::'))
+            namespaces = self.class.name.split('::')
+            namespaces[1] = 'Serializers'
+            Hanami::Utils::Class.load(namespaces.join('::'))
           end
       end
 
