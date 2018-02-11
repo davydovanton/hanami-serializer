@@ -91,5 +91,24 @@ describe Hanami::Serializer do
         it { JSON.generate(serializer).must_equal '{"name":"Anton","avatar":{"upload_file_name":"test.jpg","upload_file_size":10}}' }
       end
     end
+
+    describe 'works with #serialized_fields' do
+      let(:serializer) { UserWithSelectedFieldsSerializer.new(object) }
+      let(:object) do
+        {
+          id: 1,
+          name: 'Anton',
+          email: 'test@site.com',
+          created_at: Time.now,
+          avatar: {
+            upload_file_name: 'test.jpg',
+            upload_file_size: 10,
+            upload_updated_at: Time.now
+          }
+        }
+      end
+
+      it { serializer.to_json.must_equal '{"name":"Anton"}' }
+    end
   end
 end
