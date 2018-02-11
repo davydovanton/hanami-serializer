@@ -34,6 +34,15 @@ class UserWithAvatarSerializer < Hanami::Serializer::Base
   ).default({})
 end
 
+class UserWithSelectedFieldsSerializer < Hanami::Serializer::Base
+  attribute :id, Types::Int
+  attribute :name, Types::String
+  attribute :email, Types::String
+  attribute :created_at, Types::Time
+
+  serialized_fields [:name]
+end
+
 class AvatarSerializer < Hanami::Serializer::Base
   attribute :upload_file_name, Types::String
   attribute :upload_file_size, Types::Coercible::Int
