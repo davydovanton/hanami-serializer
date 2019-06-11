@@ -1,3 +1,5 @@
+# NOT MAINTAINED
+
 # Hanami::Serializer
 
 Simple solution for serializing you data in hanami apps.
